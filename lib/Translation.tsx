@@ -1,6 +1,14 @@
-import { Textarea, Text, Container, Space, Popover } from '@mantine/core';
-import { useForm } from '@mantine/hooks';
-import React, { useState } from 'react';
+import {
+  Textarea,
+  Text,
+  Container,
+  Space,
+  Popover,
+  Group,
+  TextInput,
+  Grid
+} from '@mantine/core';
+import React, { useEffect, useState } from 'react';
 import OutputArea from './OutputArea';
 
 type Dict = {
@@ -13,6 +21,10 @@ type Dict = {
   '(%20){2}': string;
   '%20': string;
 };
+
+type InputEvent =
+  | React.ChangeEvent<HTMLInputElement>
+  | React.ChangeEvent<HTMLTextAreaElement>;
 
 const DICT: Dict = {
   '%3C': '<',
@@ -28,44 +40,45 @@ const DICT: Dict = {
 const Translation = () => {
   const [ target, setTarget ] = useState('');
   const [ opened, setOpened ] = useState(false);
-  const codeForm = useForm({ initialValues: { code: '' } });
+  const [ input, setInput ] = useState({
+    name: '',
+    prefix: '',
+    body: '',
+    description: ''
+  });
 
-  const handleChange = (e: string) => {
-    const translated = translate(e);
-    setTarget(translated);
-  };
+  useEffect(
+    () => {
+      const translate = (): string => {
+        const { name, prefix, body, description } = input;
+        let res = encodeURI(body);
 
-  const translate = (input: string): string => {
-    let res = encodeURI(input);
+        for (const code in DICT) {
+          const re = new RegExp(code, 'g');
+          res = res.replaceAll(re, DICT[code as keyof Dict]);
+        }
 
-    //TODO:  replace with real data
-    const name = 'james';
-    const trigger = 'ja';
-    const desc = 'some shortcut';
+        const output = {
+          [name]: {
+            prefix,
+            body: res,
+            description
+          }
+        };
 
-    // loops through DICT and replace all matching chars
-    for (const code in DICT) {
-      const re = new RegExp(code, 'g');
-      res = res.replaceAll(re, DICT[code as keyof Dict]);
-    }
+        // transform object to JSON
+        let outString = JSON.stringify(output, undefined, 4);
 
-    const output = {
-      name: {
-        prefix: trigger,
-        body: res,
-        description: desc
-      }
-    };
+        // remove extra brackets surround the string and add a comma
+        outString = outString.slice(1, -1).trim() + ',';
 
-    // transform object to JSON
-    let outString = JSON.stringify(output, undefined, 4);
+        return outString;
+      };
 
-    // remove extra brackets surround the string and add a comma
-    outString = outString.slice(1, -1).trim() + ',';
-    console.log(outString);
-
-    return outString;
-  };
+      setTarget(translate());
+    },
+    [ input ]
+  );
 
   const copyTextToClipboard = async (text: string) => {
     if ('clipboard' in navigator) {
@@ -86,17 +99,43 @@ const Translation = () => {
     }
   };
 
+  const handleInputChange = (e: InputEvent, key: string) => {
+    setInput({ ...input, [key]: e.currentTarget.value });
+  };
+
   return (
     <Container size='md'>
-      <form onSubmit={codeForm.onSubmit((v) => console.log(v))}>
-        <Textarea
-          placeholder='Paste code here'
-          variant='filled'
-          onChange={(event) => handleChange(event.currentTarget.value)}
-          autosize
-          minRows={10}
-        />
-      </form>
+      <Grid>
+        <Group p={8}>
+          <TextInput
+            placeholder='name'
+            label='name'
+            value={input.name}
+            onChange={(e) => handleInputChange(e, 'name')}
+          />
+          <TextInput
+            placeholder='shortcut'
+            label='shortcut'
+            value={input.prefix}
+            onChange={(e) => handleInputChange(e, 'prefix')}
+          />
+          <TextInput
+            placeholder='description'
+            label='description'
+            value={input.description}
+            onChange={(e) => handleInputChange(e, 'description')}
+          />
+        </Group>
+        <Grid.Col span={12}>
+          <Textarea
+            placeholder='Paste code here'
+            variant='filled'
+            onChange={(e) => handleInputChange(e, 'body')}
+            autosize
+            minRows={10}
+          />
+        </Grid.Col>
+      </Grid>
 
       <Space h='md' />
 
