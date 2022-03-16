@@ -65,16 +65,16 @@ const Home: NextPage = () => {
         }
       >
         <Head>
-          <title>VS Code Snippet Generator</title>
+          {/* <title>VS Code Snippet Builder</title>
           <meta
             name='description'
             content='Simple app to generate a VS Code snipped from any code'
           />
-          <link rel='icon' href='/favicon.ico' />
+          <link rel='icon' href='/favicon.ico' /> */}
         </Head>
 
         <main className={styles.main}>
-          <h1 className={styles.title}>Snippet Generator</h1>
+          <h1 className={styles.title}>Snippet Builder</h1>
           <br />
           {/* main app in here */}
           <Translation />

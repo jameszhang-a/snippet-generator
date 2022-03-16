@@ -3,19 +3,21 @@ import Head from 'next/head';
 import { MantineProvider } from '@mantine/core';
 import React from 'react';
 import '../styles/globals.css';
+import SEO from '../lib/SEO';
 
 const App = (props: AppProps) => {
   const { Component, pageProps } = props;
 
   return (
     <React.Fragment>
-      <Head>
+      {/* <Head>
         <title>Page</title>
         <meta
           name='viewport'
           content='minimum-scale=1, initial-scale=1, width=device-width'
         />
-      </Head>
+      </Head> */}
+      <SEO />
 
       <MantineProvider
         withGlobalStyles
