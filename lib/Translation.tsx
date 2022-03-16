@@ -8,6 +8,7 @@ import {
   TextInput,
   Grid
 } from '@mantine/core';
+import { useClipboard } from '@mantine/hooks';
 import React, { useEffect, useState } from 'react';
 import OutputArea from './OutputArea';
 
@@ -39,13 +40,13 @@ const DICT: Dict = {
 
 const Translation = () => {
   const [ target, setTarget ] = useState('');
-  const [ opened, setOpened ] = useState(false);
   const [ input, setInput ] = useState({
     name: '',
     prefix: '',
     body: '',
     description: ''
   });
+  const clipboard = useClipboard({ timeout: 800 });
 
   useEffect(
     () => {
@@ -80,23 +81,8 @@ const Translation = () => {
     [ input ]
   );
 
-  const copyTextToClipboard = async (text: string) => {
-    if ('clipboard' in navigator) {
-      return await navigator.clipboard.writeText(text);
-    } else {
-      // only happens on a dinosaur browser
-      return document.execCommand('copy', true, text);
-    }
-  };
-
   const copyResult = async () => {
-    if (target) {
-      await copyTextToClipboard(target);
-      setOpened(true);
-      setTimeout(() => {
-        setOpened(false);
-      }, 800);
-    }
+    if (target) clipboard.copy(target);
   };
 
   const handleInputChange = (e: InputEvent, key: string) => {
@@ -140,8 +126,7 @@ const Translation = () => {
       <Space h='md' />
 
       <Popover
-        opened={opened}
-        onClose={() => setOpened(false)}
+        opened={clipboard.copied}
         target={<OutputArea target={target} onClick={copyResult} />}
         position='bottom'
         placement='center'
