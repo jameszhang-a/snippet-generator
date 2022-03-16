@@ -1,8 +1,30 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import { MantineProvider } from '@mantine/core';
+import React from 'react';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+const App = (props: AppProps) => {
+  const { Component, pageProps } = props;
 
-export default MyApp
+  return (
+    <React.Fragment>
+      <Head>
+        <title>Page</title>
+        <meta
+          name='viewport'
+          content='minimum-scale=1, initial-scale=1, width=device-width'
+        />
+      </Head>
+
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{ colorScheme: 'dark' }}
+      >
+        <Component {...pageProps} />
+      </MantineProvider>
+    </React.Fragment>
+  );
+};
+
+export default App;
