@@ -76,6 +76,7 @@ const Home: NextPage = () => {
         <main className={styles.main}>
           <h1 className={styles.title}>Snippet Generator</h1>
           <br />
+          {/* main app in here */}
           <Translation />
         </main>
 

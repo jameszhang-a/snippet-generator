@@ -1,15 +1,8 @@
-import {
-  Textarea,
-  Text,
-  Container,
-  Space,
-  Popover,
-  Group,
-  TextInput,
-  Grid
-} from '@mantine/core';
+import { Text, Container, Space, Popover } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import React, { useEffect, useState } from 'react';
+import InputArea from './InputArea';
+import CopyArea from './CopyArea';
 import OutputArea from './OutputArea';
 
 type Dict = {
@@ -39,6 +32,7 @@ const DICT: Dict = {
 };
 
 const Translation = () => {
+  const clipboard = useClipboard({ timeout: 800 });
   const [ target, setTarget ] = useState('');
   const [ input, setInput ] = useState({
     name: '',
@@ -46,7 +40,6 @@ const Translation = () => {
     body: '',
     description: ''
   });
-  const clipboard = useClipboard({ timeout: 800 });
 
   useEffect(
     () => {
@@ -54,6 +47,7 @@ const Translation = () => {
         const { name, prefix, body, description } = input;
         let res = encodeURI(body);
 
+        // Run replace with all regex rules from DICT
         for (const code in DICT) {
           const re = new RegExp(code, 'g');
           res = res.replaceAll(re, DICT[code as keyof Dict]);
@@ -90,56 +84,17 @@ const Translation = () => {
   };
 
   return (
-    <Container size='md'>
-      <Grid>
-        <Group p={8}>
-          <TextInput
-            placeholder='name'
-            label='name'
-            value={input.name}
-            onChange={(e) => handleInputChange(e, 'name')}
-          />
-          <TextInput
-            placeholder='shortcut'
-            label='shortcut'
-            value={input.prefix}
-            onChange={(e) => handleInputChange(e, 'prefix')}
-          />
-          <TextInput
-            placeholder='description'
-            label='description'
-            value={input.description}
-            onChange={(e) => handleInputChange(e, 'description')}
-          />
-        </Group>
-        <Grid.Col span={12}>
-          <Textarea
-            placeholder='Paste code here'
-            variant='filled'
-            onChange={(e) => handleInputChange(e, 'body')}
-            autosize
-            minRows={10}
-          />
-        </Grid.Col>
-      </Grid>
+    <React.Fragment>
+      <InputArea input={input} handleChange={handleInputChange} />
 
       <Space h='md' />
 
-      <Popover
-        opened={clipboard.copied}
-        target={<OutputArea target={target} onClick={copyResult} />}
-        position='bottom'
-        placement='center'
-        withArrow
-        trapFocus={false}
-        closeOnEscape={false}
-        transition='scale-y'
-        radius='lg'
-        spacing='xs'
-      >
-        <Text color='green'>Copied to clipboard!</Text>
-      </Popover>
-    </Container>
+      <OutputArea
+        clipboard={clipboard}
+        target={target}
+        copyResult={copyResult}
+      />
+    </React.Fragment>
   );
 };
 

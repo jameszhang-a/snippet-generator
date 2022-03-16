@@ -1,27 +1,25 @@
-import { MediaQuery, Textarea } from '@mantine/core';
+import { Popover, Text } from '@mantine/core';
 import React from 'react';
+import CopyArea from './CopyArea';
 
-type Props = {
-  target: string;
-  onClick: Function;
-};
+type Props = { clipboard: any; target: string; copyResult: Function };
 
-const OutputArea = ({ target, onClick }: Props) => {
+const OutputArea = ({ clipboard, target, copyResult }: Props) => {
   return (
-    <React.Fragment>
-      <MediaQuery largerThan='sm' styles={{ width: '50vw' }}>
-        <Textarea
-          placeholder='output'
-          variant='default'
-          autosize
-          value={target}
-          sx={{ width: '80vw' }}
-          onClick={() => onClick()}
-          readOnly
-          minRows={5}
-        />
-      </MediaQuery>
-    </React.Fragment>
+    <Popover
+      opened={clipboard.copied}
+      target={<CopyArea target={target} onClick={copyResult} />}
+      position='bottom'
+      placement='center'
+      withArrow
+      trapFocus={false}
+      closeOnEscape={false}
+      transition='scale-y'
+      radius='lg'
+      spacing='xs'
+    >
+      <Text color='green'>Copied to clipboard!</Text>
+    </Popover>
   );
 };
 
