@@ -62,6 +62,7 @@ const Translation = () => {
 
     // remove extra brackets surround the string and add a comma
     outString = outString.slice(1, -1).trim() + ',';
+    console.log(outString);
 
     return outString;
   };
@@ -108,11 +109,11 @@ const Translation = () => {
         withArrow
         trapFocus={false}
         closeOnEscape={false}
-        transition='pop-top-left'
+        transition='scale-y'
         radius='lg'
         spacing='xs'
       >
-        <Text color='red'>Copied to clipboard!</Text>
+        <Text color='green'>Copied to clipboard!</Text>
       </Popover>
     </Container>
   );
