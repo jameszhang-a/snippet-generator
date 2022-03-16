@@ -19,16 +19,16 @@ const DICT: Dict = {
   '%3E': '>',
   '%7B': '{',
   '%7D': '}',
-  '%0A': '\\n',
-  '(%20){4}': '\\t',
-  '(%20){2}': '\\t',
+  '%0A': '\n',
+  '(%20){4}': '\t',
+  '(%20){2}': '\t',
   '%20': ' '
 };
 
 const Translation = () => {
   const [ target, setTarget ] = useState('');
   const [ opened, setOpened ] = useState(false);
-  const form = useForm({ initialValues: { code: '' } });
+  const codeForm = useForm({ initialValues: { code: '' } });
 
   const handleChange = (e: string) => {
     const translated = translate(e);
@@ -38,11 +38,32 @@ const Translation = () => {
   const translate = (input: string): string => {
     let res = encodeURI(input);
 
+    //TODO:  replace with real data
+    const name = 'james';
+    const trigger = 'ja';
+    const desc = 'some shortcut';
+
+    // loops through DICT and replace all matching chars
     for (const code in DICT) {
       const re = new RegExp(code, 'g');
       res = res.replaceAll(re, DICT[code as keyof Dict]);
     }
-    return res;
+
+    const output = {
+      name: {
+        prefix: trigger,
+        body: res,
+        description: desc
+      }
+    };
+
+    // transform object to JSON
+    let outString = JSON.stringify(output, undefined, 4);
+
+    // remove extra brackets surround the string and add a comma
+    outString = outString.slice(1, -1).trim() + ',';
+
+    return outString;
   };
 
   const copyTextToClipboard = async (text: string) => {
@@ -66,7 +87,7 @@ const Translation = () => {
 
   return (
     <Container size='md'>
-      <form onSubmit={form.onSubmit((v) => console.log(v))}>
+      <form onSubmit={codeForm.onSubmit((v) => console.log(v))}>
         <Textarea
           placeholder='Paste code here'
           variant='filled'
@@ -91,7 +112,7 @@ const Translation = () => {
         radius='lg'
         spacing='xs'
       >
-        <Text color='blue'>Copied!</Text>
+        <Text color='red'>Copied to clipboard!</Text>
       </Popover>
     </Container>
   );
