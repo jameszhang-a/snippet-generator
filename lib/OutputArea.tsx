@@ -6,7 +6,7 @@ type Props = { clipboard: any; target: string; copyResult: Function };
 
 const OutputArea = ({ clipboard, target, copyResult }: Props) => {
   return (
-    <MediaQuery largerThan='sm' styles={{ width: '65vw' }}>
+    <MediaQuery largerThan='md' styles={{ width: '50vw' }}>
       <Popover
         pt={20}
         sx={{ width: '80vw' }}

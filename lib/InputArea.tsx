@@ -39,7 +39,7 @@ const InputArea = ({ input, handleChange }: Props) => {
           onChange={(e) => handleChange(e, 'description')}
         />
       </Group>
-      <MediaQuery largerThan='sm' styles={{ width: '65vw' }}>
+      <MediaQuery largerThan='md' styles={{ width: '50vw' }}>
         <Textarea
           sx={{ width: '80vw' }}
           placeholder='Paste code here'
