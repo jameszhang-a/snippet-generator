@@ -1,4 +1,4 @@
-import { Grid, Group, TextInput, Textarea } from '@mantine/core';
+import { Grid, Group, TextInput, Textarea, MediaQuery } from '@mantine/core';
 import React from 'react';
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 
 const InputArea = ({ input, handleChange }: Props) => {
   return (
-    <Grid>
+    <React.Fragment>
       <Group p={8}>
         <TextInput
           placeholder='name'
@@ -34,16 +34,17 @@ const InputArea = ({ input, handleChange }: Props) => {
           onChange={(e) => handleChange(e, 'description')}
         />
       </Group>
-      <Grid.Col span={12}>
+      <MediaQuery largerThan='sm' styles={{ width: '65vw' }}>
         <Textarea
+          sx={{ width: '80vw' }}
           placeholder='Paste code here'
           variant='filled'
           onChange={(e) => handleChange(e, 'body')}
           autosize
           minRows={10}
         />
-      </Grid.Col>
-    </Grid>
+      </MediaQuery>
+    </React.Fragment>
   );
 };
 

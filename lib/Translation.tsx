@@ -1,4 +1,4 @@
-import { Text, Container, Space, Popover } from '@mantine/core';
+import { Center } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import React, { useEffect, useState } from 'react';
 import InputArea from './InputArea';
@@ -84,17 +84,14 @@ const Translation = () => {
   };
 
   return (
-    <React.Fragment>
+    <Center style={{ flexDirection: 'column' }}>
       <InputArea input={input} handleChange={handleInputChange} />
-
-      <Space h='md' />
-
       <OutputArea
         clipboard={clipboard}
         target={target}
         copyResult={copyResult}
       />
-    </React.Fragment>
+    </Center>
   );
 };
 
