@@ -21,7 +21,7 @@ const OutputArea = ({ clipboard, target, copyResult }: Props) => {
         radius='lg'
         spacing='xs'
       >
-        <Text color='green'>Copied to clipboard!</Text>
+        <Text color='#6DA34D'>Copied to clipboard!</Text>
       </Popover>
     </MediaQuery>
   );

@@ -1,4 +1,4 @@
-import { Grid, Group, TextInput, Textarea, MediaQuery } from '@mantine/core';
+import { Group, TextInput, Textarea, MediaQuery } from '@mantine/core';
 import React from 'react';
 
 type Props = {
@@ -11,25 +11,30 @@ type Props = {
   handleChange: Function;
 };
 
+const labelStyle = { label: { color: '#B4CDED' } };
+
 const InputArea = ({ input, handleChange }: Props) => {
   return (
     <React.Fragment>
       <Group p={8}>
         <TextInput
-          placeholder='name'
+          placeholder=''
           label='name'
+          styles={labelStyle}
           value={input.name}
           onChange={(e) => handleChange(e, 'name')}
         />
         <TextInput
-          placeholder='shortcut'
-          label='shortcut'
+          placeholder=''
+          label='prefix (trigger)'
+          styles={labelStyle}
           value={input.prefix}
           onChange={(e) => handleChange(e, 'prefix')}
         />
         <TextInput
-          placeholder='description'
+          placeholder=''
           label='description'
+          styles={labelStyle}
           value={input.description}
           onChange={(e) => handleChange(e, 'description')}
         />
