@@ -1,9 +1,10 @@
 import { Center } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import InputArea from './InputArea';
 import CopyArea from './CopyArea';
 import OutputArea from './OutputArea';
+import SnippetProvider from '../Contexts/SnippetProvider';
 
 type Dict = {
   '%3C': string;
@@ -19,6 +20,13 @@ type Dict = {
 type InputEvent =
   | React.ChangeEvent<HTMLInputElement>
   | React.ChangeEvent<HTMLTextAreaElement>;
+
+type Snippet = {
+  name: string;
+  prefix: string;
+  body: string;
+  description: string;
+};
 
 const DICT: Dict = {
   '%3C': '<',
@@ -83,14 +91,22 @@ const Translation = () => {
     setInput({ ...input, [key]: e.currentTarget.value });
   };
 
+  const handleOutputChange = (e: InputEvent) => {
+    console.log('output changed');
+  };
+
   return (
     <Center style={{ flexDirection: 'column' }}>
-      <InputArea input={input} handleChange={handleInputChange} />
-      <OutputArea
-        clipboard={clipboard}
-        target={target}
-        copyResult={copyResult}
-      />
+      <SnippetProvider>
+        <InputArea input={input} handleChange={handleInputChange} />
+        <OutputArea
+          clipboard={clipboard}
+          copyResult={copyResult}
+          target={target}
+          setTarget={setTarget}
+          handleChange={handleOutputChange}
+        />
+      </SnippetProvider>
     </Center>
   );
 };

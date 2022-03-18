@@ -3,10 +3,11 @@ import React from 'react';
 
 type Props = {
   target: string;
-  onClick: Function;
+  setTarget: Function;
+  handleChange: React.ChangeEventHandler<HTMLTextAreaElement>;
 };
 
-const CopyArea = ({ target, onClick }: Props) => {
+const CopyArea = ({ target, setTarget, handleChange }: Props) => {
   return (
     <React.Fragment>
       <Textarea
@@ -14,8 +15,7 @@ const CopyArea = ({ target, onClick }: Props) => {
         variant='default'
         autosize
         value={target}
-        onClick={() => onClick()}
-        readOnly
+        onChange={handleChange}
         minRows={5}
       />
     </React.Fragment>

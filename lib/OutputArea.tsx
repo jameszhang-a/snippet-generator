@@ -1,29 +1,38 @@
-import { MediaQuery, Popover, Text } from '@mantine/core';
+import { Button, MediaQuery, Popover, Text } from '@mantine/core';
 import React from 'react';
 import CopyArea from './CopyArea';
 
-type Props = { clipboard: any; target: string; copyResult: Function };
+type Props = {
+  clipboard: any;
+  target: string;
+  copyResult: Function;
+  setTarget: Function;
+  handleChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+};
 
-const OutputArea = ({ clipboard, target, copyResult }: Props) => {
+const OutputArea = ({
+  clipboard,
+  target,
+  copyResult,
+  setTarget,
+  handleChange
+}: Props) => {
   return (
-    <MediaQuery largerThan='md' styles={{ width: '50vw' }}>
-      <Popover
-        pt={20}
-        sx={{ width: '80vw' }}
-        opened={clipboard.copied}
-        target={<CopyArea target={target} onClick={copyResult} />}
-        position='bottom'
-        placement='center'
-        withArrow
-        trapFocus={false}
-        closeOnEscape={false}
-        transition='scale-y'
-        radius='lg'
-        spacing='xs'
+    <React.Fragment>
+      <MediaQuery largerThan='md' styles={{ width: '50vw' }}>
+        <CopyArea
+          target={target}
+          setTarget={setTarget}
+          handleChange={handleChange}
+        />
+      </MediaQuery>
+      <Button
+        color={clipboard.copied ? 'teal' : 'blue'}
+        onClick={() => copyResult()}
       >
-        <Text color='#6DA34D'>Copied to clipboard!</Text>
-      </Popover>
-    </MediaQuery>
+        {clipboard.copied ? 'copied to clipboard!' : 'Copy snippet'}
+      </Button>
+    </React.Fragment>
   );
 };
 

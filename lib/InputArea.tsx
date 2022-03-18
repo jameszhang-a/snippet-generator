@@ -1,5 +1,6 @@
 import { Group, TextInput, Textarea, MediaQuery } from '@mantine/core';
-import React from 'react';
+import React, { useContext } from 'react';
+import SnippetProvider from '../Contexts/SnippetProvider';
 
 type Props = {
   input: {
@@ -14,6 +15,9 @@ type Props = {
 const labelStyle = { label: { color: '#B4CDED' } };
 
 const InputArea = ({ input, handleChange }: Props) => {
+  const { snippet, setSnippet } = useContext(SnippetProvider.context);
+  console.log(snippet);
+
   return (
     <React.Fragment>
       <Group p={8}>
@@ -22,7 +26,7 @@ const InputArea = ({ input, handleChange }: Props) => {
           label='name'
           styles={labelStyle}
           value={input.name}
-          onChange={(e) => handleChange(e, 'name')}
+          onChange={(e) => setSnippet(e, 'name')}
         />
         <TextInput
           placeholder=''
