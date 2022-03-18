@@ -19,13 +19,11 @@ const OutputArea = ({
 }: Props) => {
   return (
     <React.Fragment>
-      <MediaQuery largerThan='md' styles={{ width: '50vw' }}>
-        <CopyArea
-          target={target}
-          setTarget={setTarget}
-          handleChange={handleChange}
-        />
-      </MediaQuery>
+      <CopyArea
+        target={target}
+        setTarget={setTarget}
+        handleChange={handleChange}
+      />
       <Button
         color={clipboard.copied ? 'teal' : 'blue'}
         onClick={() => copyResult()}
