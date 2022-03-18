@@ -1,17 +1,28 @@
 import React, { createContext, useState } from 'react';
 
 type Props = { children: any };
-type Context = {
-  snippet: {
-    name: string;
-    prefix: string;
-    body: string;
-    description: string;
-  };
-  setSnippet: Function;
+
+export type Snippet = {
+  name: string;
+  prefix: string;
+  body: string;
+  description: string;
 };
 
-const context: React.Context<any> = createContext(null);
+export type GlobalSnippet = {
+  snippet: Snippet;
+  setSnippet: (s: any) => void;
+};
+
+const context = createContext<GlobalSnippet>({
+  snippet: {
+    name: '',
+    prefix: '',
+    body: '',
+    description: ''
+  },
+  setSnippet: () => {}
+});
 
 const SnippetProvider = ({ children }: Props) => {
   const [ snippet, setSnippet ] = useState({
@@ -20,6 +31,7 @@ const SnippetProvider = ({ children }: Props) => {
     body: '',
     description: ''
   });
+
   return (
     <context.Provider value={{ snippet, setSnippet }}>
       {children}
