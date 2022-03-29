@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import InputArea from './InputArea';
 import CopyArea from './CopyArea';
 import OutputArea from './OutputArea';
+import FAQ from './FAQ';
 
 type Dict = {
   '%3C': string;
@@ -91,6 +92,7 @@ const Translation = () => {
         target={target}
         copyResult={copyResult}
       />
+      <FAQ />
     </Center>
   );
 };

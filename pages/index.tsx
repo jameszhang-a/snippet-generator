@@ -1,9 +1,9 @@
 import type { NextPage } from 'next'
 import { Anchor, AppShell, createStyles, Navbar } from '@mantine/core';
 import { useState } from 'react';
-import Footer from '../lib/Footer/Footer';
-import TopNav from '../lib/TopNav/TopNav';
-import Translation from '../lib/Translation';
+import Footer from '../lib/Components/Footer/Footer';
+import TopNav from '../lib/Components/TopNav/TopNav';
+import Translation from '../lib/Components/Translation';
 import styles from '../styles/Home.module.css';
 
 const useStyles = createStyles((theme) => ({
