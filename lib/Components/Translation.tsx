@@ -2,35 +2,13 @@ import { Center } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import React, { useEffect, useState } from 'react';
 import InputArea from './InputArea';
-import CopyArea from './CopyArea';
 import OutputArea from './OutputArea';
+import { DICT } from '../Dict';
 import FAQ from './FAQ';
-
-type Dict = {
-  '%3C': string;
-  '%3E': string;
-  '%7B': string;
-  '%7D': string;
-  '%0A': string;
-  '(%20){4}': string;
-  '(%20){2}': string;
-  '%20': string;
-};
 
 type InputEvent =
   | React.ChangeEvent<HTMLInputElement>
   | React.ChangeEvent<HTMLTextAreaElement>;
-
-const DICT: Dict = {
-  '%3C': '<',
-  '%3E': '>',
-  '%7B': '{',
-  '%7D': '}',
-  '%0A': '\n',
-  '(%20){4}': '\t',
-  '(%20){2}': '\t',
-  '%20': ' '
-};
 
 const Translation = () => {
   const clipboard = useClipboard({ timeout: 800 });
@@ -51,7 +29,7 @@ const Translation = () => {
         // Run replace with all regex rules from DICT
         for (const code in DICT) {
           const re = new RegExp(code, 'g');
-          res = res.replaceAll(re, DICT[code as keyof Dict]);
+          res = res.replaceAll(re, DICT[code]);
         }
 
         const output = {
@@ -87,11 +65,7 @@ const Translation = () => {
   return (
     <Center style={{ flexDirection: 'column' }}>
       <InputArea input={input} handleChange={handleInputChange} />
-      <OutputArea
-        clipboard={clipboard}
-        target={target}
-        copyResult={copyResult}
-      />
+      <OutputArea clipboard={clipboard} target={target} copyResult={copyResult} />
       <FAQ />
     </Center>
   );
